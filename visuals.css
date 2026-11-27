@@ -6,14 +6,17 @@
    ========================================================================== */
 
 :root {
-  --panel: #0e1116;
-  --panel-2: #141920;
-  --panel-3: #1a2029;
+  --bg: #080C12;
+  --panel-1: #101720;
+  --panel-2: #151E28;
+  --panel-3: #1B2936;
   --line: rgba(255, 255, 255, 0.075);
   --line-strong: rgba(255, 255, 255, 0.13);
-  --text: #e9f0f8;
+  --text: #EAF2F8;
   --muted: #9aa9bb;
   --dim: #6d7e90;
+  --accent: #FF9B45;
+  --text-on-accent: #080C12;
 
   --green: #5ad6a2;
   --amber: #e9bd72;
@@ -66,6 +69,12 @@ body {
 /* ---------- shell ---------- */
 
 .sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
   width: 272px;
   border-right: 1px solid var(--line);
   background: linear-gradient(180deg, #0d1016, #090b0f 68%);
@@ -128,6 +137,7 @@ body {
 .main-nav {
   flex: 1 1 auto;
   min-height: 0;
+  overflow-y: auto;
   padding: 2px 14px 32px;
   overscroll-behavior: contain;
   /* Fade the cut-off edge so a partly scrolled group reads as "more below".
@@ -141,10 +151,32 @@ body {
 }
 
 .nav-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   padding: 0 10px 8px;
+  border: 0;
+  background: none;
   color: #6b7d91;
   font-size: 9.5px;
   letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-heading:hover {
+  color: #c8d4e2;
+}
+
+.nav-chevron {
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.nav-group.collapsed .nav-link {
+  display: none;
 }
 
 .nav-link {
@@ -170,7 +202,7 @@ body {
   color: #ffcb9f;
   border-color: rgba(255, 138, 31, 0.26);
   background: linear-gradient(90deg, rgba(255, 138, 31, 0.19), rgba(255, 138, 31, 0.045));
-  box-shadow: inset 2px 0 0 var(--cyan);
+  box-shadow: inset 2px 0 0 var(--accent);
 }
 
 .nav-link.active svg {
@@ -178,6 +210,7 @@ body {
 }
 
 .sidebar-footer {
+  flex: none;
   padding: 16px 20px 20px;
   border-top: 1px solid var(--line);
   background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.4));
@@ -194,6 +227,21 @@ body {
   color: #5d6e81;
   font-size: 9.5px;
   letter-spacing: 0.06em;
+}
+
+/* One centred empty-state card (DESIGN.md). A single centred card for
+   empty states, not several scattered empty messages. */
+.empty-state {
+  margin-inline: auto;
+  max-width: 560px;
+}
+
+/* Visible orange focus ring (DESIGN.md). The base stylesheet already rings
+   buttons and links; this makes the ring orange and visible on every
+   focusable element, including the nav-heading toggle buttons. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /* ---------- page header ---------- */
@@ -525,13 +573,13 @@ body {
 
 .panel-symbol.blue {
   border-color: rgba(255, 122, 0, 0.26);
-  color: var(--blue);
+  color: var(--accent);
   background: linear-gradient(160deg, rgba(255, 122, 0, 0.2), rgba(255, 122, 0, 0.04));
 }
 
 .panel-symbol.violet {
   border-color: rgba(255, 122, 0, 0.26);
-  color: var(--violet);
+  color: var(--accent);
   background: linear-gradient(160deg, rgba(255, 122, 0, 0.2), rgba(255, 122, 0, 0.04));
 }
 
@@ -608,7 +656,7 @@ body {
   height: 42px;
   border: 1px solid rgba(255, 122, 0, 0.2);
   border-radius: 11px;
-  color: var(--blue);
+  color: var(--accent);
   background: rgba(255, 122, 0, 0.11);
 }
 
@@ -1165,88 +1213,6 @@ body {
   outline-offset: 2px;
 }
 
-/* Visible list of planned screens, shown when the notice toggle expands
-   (Group B2). The list names each screen with its status, so a beginner
-   sees what is planned, what is outline only, and what is available. */
-
-.demo-planned-list {
-  flex: 1 1 100%;
-  margin-top: 4px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(233, 189, 114, 0.18);
-}
-
-.demo-planned-heading {
-  margin: 0 0 10px;
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.demo-planned-group {
-  margin: 0 0 10px;
-}
-
-.demo-planned-group-title {
-  margin: 0 0 6px;
-  color: #d8b780;
-  font: 700 8px/1.4 var(--mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.demo-planned-items {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 4px 18px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.demo-planned-item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  color: var(--muted);
-  font-size: 11.5px;
-  line-height: 1.55;
-}
-
-.demo-planned-name {
-  color: var(--text);
-}
-
-.demo-planned-status {
-  flex: none;
-  color: #d8b780;
-  font: 8px/1.5 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-/* Plain-words reason next to a disabled button (Group B3). */
-
-.splunk-disabled {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.disabled-reason {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.splunk-disabled .disabled-reason {
-  max-width: 280px;
-  text-align: right;
-}
-
 /* Banner on a planned or outline-only page ------------------------------- */
 
 .demo-page-banner {
@@ -1298,7 +1264,7 @@ body {
 
 .main-nav .nav-link[data-demo-state="outline"]::after {
   content: "outline";
-  color: var(--violet);
+  color: var(--accent);
   border-color: rgba(255, 122, 0, 0.24);
   background: rgba(255, 122, 0, 0.07);
 }
