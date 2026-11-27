@@ -54,6 +54,41 @@
 
   var HIDDEN_COUNT = PLANNED.length + OUTLINE.length;
 
+  /* Display names for the planned screens, so the visible list names
+     them instead of showing raw routes. */
+  var NAMES = {
+    "/my-lab": "My Lab Overview",
+    "/my-lab/infrastructure": "Infrastructure",
+    "/my-lab/red-team": "Red Team",
+    "/my-lab/blue-team": "Blue Team",
+    "/my-lab/purple-team": "Purple Team",
+    "/my-lab/management": "Lab Management",
+    "/soc-analyst/shift-mode": "Shift Mode",
+    "/soc-analyst/study-mode": "Study Mode",
+    "/soc-analyst/my-cases": "My Cases",
+    "/detection-engineering/backlog": "Backlog & Coverage",
+    "/detection-engineering/library": "Detection Library",
+    "/detection-engineering/tests": "Tests & Validation",
+    "/detection-engineering/tuning": "Tuning",
+    "/detection-engineering/release": "Release & Maintenance",
+    "/situation-room": "Situation Room",
+    "/my-portfolio": "My Portfolio",
+    "/where-i-am": "Where I Am",
+    "/knowledge-center/map-1": "Map 1 · Foundations",
+    "/knowledge-center/map-2": "Map 2 · Investigation",
+    "/knowledge-center/windows-events": "Windows Event ID Library",
+    "/knowledge-center/sysmon-events": "Sysmon Event ID Library",
+    "/knowledge-center/mitre-attack": "MITRE ATT&CK",
+    "/knowledge-center/attack-catalog": "Attack Catalog",
+    "/knowledge-center/spl-reference": "Splunk SPL Reference",
+    "/knowledge-center/telemetry": "Telemetry & Data Sources",
+    "/knowledge-center/runbooks": "Runbooks"
+  };
+
+  /* These three are in PLANNED for the sidebar label, but they actually
+     work in the demo, so the visible list must not call them planned. */
+  var AVAILABLE = ["/soc-analyst/shift-mode", "/soc-analyst/my-cases", "/situation-room"];
+
   var BASE = "/SOC-HQ-demo/";
   var script = document.currentScript;
   if (script && script.src) {
@@ -122,6 +157,32 @@
 
   /* --- demo notice ------------------------------------------------------ */
 
+  function plannedGroup(title, routes, statusText) {
+    var group = element("div", "demo-planned-group");
+    group.appendChild(element("p", "demo-planned-group-title", title));
+    var ul = element("ul", "demo-planned-items");
+    routes.forEach(function (route) {
+      var li = element("li", "demo-planned-item");
+      li.appendChild(element("span", "demo-planned-name", NAMES[route] || route));
+      li.appendChild(element("span", "demo-planned-status", statusText));
+      ul.appendChild(li);
+    });
+    group.appendChild(ul);
+    return group;
+  }
+
+  function buildPlannedList() {
+    var list = element("div", "demo-planned-list");
+    list.id = "demo-planned-list";
+    list.hidden = true;
+    list.appendChild(element("p", "demo-planned-heading", "Planned screens (" + HIDDEN_COUNT + ")"));
+    var plannedRoutes = PLANNED.filter(function (route) { return AVAILABLE.indexOf(route) === -1; });
+    list.appendChild(plannedGroup("Designed · Not Implemented", plannedRoutes, "Designed · Not Implemented"));
+    list.appendChild(plannedGroup("Outline only", OUTLINE, "Outline only"));
+    list.appendChild(plannedGroup("Available in this demo", AVAILABLE, "Available in this demo"));
+    return list;
+  }
+
   function buildNotice() {
     var box = element("div", "demo-notice");
     box.id = "demo-notice";
@@ -145,6 +206,7 @@
       paint();
     });
     box.appendChild(toggle);
+    box.appendChild(buildPlannedList());
     return box;
   }
 
@@ -160,6 +222,8 @@
       ? "Hide planned screens"
       : "Show planned screens (" + HIDDEN_COUNT + ")";
     toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+    var list = notice.querySelector(".demo-planned-list");
+    if (list) list.hidden = !expanded;
   }
 
   /* --- page banner for unfinished screens ------------------------------- */
