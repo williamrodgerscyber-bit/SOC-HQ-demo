@@ -1213,6 +1213,88 @@ body {
   outline-offset: 2px;
 }
 
+/* Visible list of planned screens, shown when the notice toggle expands
+   (Group B2). The list names each screen with its status, so a beginner
+   sees what is planned, what is outline only, and what is available. */
+
+.demo-planned-list {
+  flex: 1 1 100%;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(233, 189, 114, 0.18);
+}
+
+.demo-planned-heading {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.demo-planned-group {
+  margin: 0 0 10px;
+}
+
+.demo-planned-group-title {
+  margin: 0 0 6px;
+  color: #d8b780;
+  font: 700 8px/1.4 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.demo-planned-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 4px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-planned-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.demo-planned-name {
+  color: var(--text);
+}
+
+.demo-planned-status {
+  flex: none;
+  color: #d8b780;
+  font: 8px/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Plain-words reason next to a disabled button (Group B3). */
+
+.splunk-disabled {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.disabled-reason {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.splunk-disabled .disabled-reason {
+  max-width: 280px;
+  text-align: right;
+}
+
 /* Banner on a planned or outline-only page ------------------------------- */
 
 .demo-page-banner {
