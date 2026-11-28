@@ -37,11 +37,9 @@
 
 body {
   font-family: var(--font);
-  background:
-    radial-gradient(920px 540px at 78% -14%, rgba(255, 138, 31, 0.11), transparent 62%),
-    radial-gradient(760px 500px at 4% 0%, rgba(255, 122, 0, 0.035), transparent 60%),
-    var(--bg);
-  background-attachment: fixed;
+  /* Glossy look (plan PR 8): flat surface, no gradient wash. Depth comes
+     from the lightness ladder and soft shadows, not from gradients. */
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
